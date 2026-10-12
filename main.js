@@ -45,10 +45,8 @@ function frame(now){
 requestAnimationFrame(frame);
 const btn=document.getElementById('copy');btn.addEventListener('click',async()=>{const t=document.getElementById('cmd').textContent;
  try{await navigator.clipboard.writeText(t)}catch{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
- const l=btn.querySelector('span'),st=document.getElementById('copyStatus');btn.classList.add('done');l.textContent='Copiado';if(st)st.textContent='Comando copiado';clearTimeout(btn._t);btn._t=setTimeout(()=>{btn.classList.remove('done');l.textContent='Copiar';if(st)st.textContent=''},1800)});
-document.getElementById('donate').addEventListener('click',e=>e.preventDefault());
+ const st=document.getElementById('copyStatus');btn.classList.add('done');st.textContent='Comando copiado';clearTimeout(btn._t);btn._t=setTimeout(()=>{btn.classList.remove('done');st.textContent=''},1800)});
+const rv=document.querySelectorAll('.rv');if(reduce||!('IntersectionObserver'in window))rv.forEach(e=>e.classList.add('in'));else{const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});rv.forEach(e=>io.observe(e))}
+const nav=document.querySelector('.nav');const onS=()=>nav.classList.toggle('scrolled',scrollY>8);addEventListener('scroll',onS,{passive:true});onS();
 })();
 
-(()=>{const lb=document.getElementById('lb'),im=lb.querySelector('img');
-document.querySelectorAll('a.zoom').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();im.src=a.href;im.alt=a.querySelector('img').alt;im.onload=()=>lb.style.setProperty("--nw",im.naturalWidth+"px");lb.hidden=false}));
-lb.addEventListener('click',()=>lb.hidden=true);addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true})})();

@@ -334,7 +334,7 @@ pill.innerHTML = `
   <span class="mo-time"></span>
   <span class="mo-rec" hidden><i></i><span class="mo-el">00:00</span></span>
   <span class="mo-notice" hidden></span>
-  <span class="mo-toast" hidden><img alt="" src="assets/icon.png"><span></span></span>
+  <span class="mo-toast" hidden><svg class="mo-ni" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span></span></span>
   <span class="mo-dots"></span>
 </div>
 <div class="mo-view mo-menu off">
@@ -363,13 +363,13 @@ pill.innerHTML = `
     <div class="mo-r2">${icon('chip', 'dark', 18)}<span class="l">CPU</span><span class="v mo-cpu"></span></div><div class="mo-bar"><div><i class="mo-cpub"></i></div></div>
     <div class="mo-r2">${icon('apps', 'dark', 18)}<span class="l">Memoria</span><span class="v mo-mem"></span></div><div class="mo-bar"><div><i class="mo-memb"></i></div></div>
     <div class="mo-r2">${icon('folder', 'dark', 18)}<span class="l">Disco</span><span class="v">13% · 188,8 GB libres</span></div><div class="mo-bar"><div><i style="width:13%"></i></div></div>
-    <div class="mo-r2">${icon('display', 'dark', 18)}<span class="l">GTX 1050</span><span class="v mo-gpu"></span></div>
+    <div class="mo-r2">${icon('display', 'dark', 18)}<span class="l">Gráficos</span><span class="v mo-gpu"></span></div>
   </div>
   <div class="mo-tt p">Dispositivos</div>
   <div class="mo-card">
-    <div class="mo-r2">${icon('keyboard', 'dark', 18)}<span class="l">Teclado</span><span class="v">Evision rgb keyboard</span></div>
-    <div class="mo-r2">${icon('mouse', 'dark', 18)}<span class="l">Mouse</span><span class="v">Compx vxe mouse 1k dongle</span></div>
-    <div class="mo-r2">${icon('volume', 'dark', 18)}<span class="l">Audio</span><span class="v">PHL 221V8</span></div>
+    <div class="mo-r2">${icon('keyboard', 'dark', 18)}<span class="l">Teclado</span><span class="v">Teclado inalámbrico</span></div>
+    <div class="mo-r2">${icon('mouse', 'dark', 18)}<span class="l">Mouse</span><span class="v">Mouse inalámbrico</span></div>
+    <div class="mo-r2">${icon('volume', 'dark', 18)}<span class="l">Audio</span><span class="v">Parlantes USB</span></div>
   </div>
 </div>
 <div class="mo-view mo-panel mo-apps off">
@@ -449,7 +449,7 @@ function renderDesks() {
 $('.mo-back').addEventListener('click', e => { e.stopPropagation(); setPage('menu') });
 
 /* Búsqueda (SearchSection.qml) */
-const APPS = [['Ghostty', 'terminal'], ['Archivos', 'folder'], ['Ajustes', 'settings'], ['Steam', 'apps'], ['Firefox', 'external'], ['Captura de pantalla', 'capture'], ['Teclado', 'keyboard'], ['Música', 'music']];
+const APPS = [['Terminal', 'terminal'], ['Archivos', 'folder'], ['Ajustes', 'settings'], ['Navegador', 'external'], ['Música', 'music'], ['Captura de pantalla', 'capture'], ['Notas', 'brush'], ['Monitor del sistema', 'chip']];
 const input = $('.mo-box input'), box = $('.mo-box'), results = $('.mo-results'); let sel = 0, res = [];
 function search() { const q = input.value.trim().toLowerCase(); res = q ? APPS.filter(a => a[0].toLowerCase().includes(q)).slice(0, 5) : []; sel = 0; drawRes() }
 function drawRes() { results.innerHTML = ''; res.forEach((a, i) => { const r = h('div', 'mo-res' + (i === sel ? ' sel' : ''), `${icon(a[1], 'dark', 24)}<span>${a[0]}</span>`);
@@ -466,11 +466,11 @@ box.dataset.int = '';
 $('.mo-ctrls').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; e.stopPropagation(); const p = S.player; if (!p) return;
   if (b.dataset.m === 'play') p.playing = !p.playing; else { p.pos = 0; const t = TRACKS[(TRACKS.findIndex(x => x[0] === p.title) + (b.dataset.m === 'next' ? 1 : TRACKS.length - 1)) % TRACKS.length]; p.title = t[0]; p.artist = t[1]; p.len = t[2] } });
 $('.mo-ctrls').dataset.int = '';
-const TRACKS = [['imperfect.mp3', 'D4YDREAM', 196], ['Nocturne', 'D4YDREAM', 182], ['Blue hour', 'D4YDREAM', 214]];
+const TRACKS = [['Afterglow', 'Nova Ensemble', 214], ['Quiet Hours', 'Nova Ensemble', 188], ['Low Tide', 'Halden', 201]];
 let artAngle = 0;
 
 /* Apps en segundo plano (AppsPanel.qml) */
-let trayItems = [{ id: 'steam', name: 'Steam', icon: 'apps' }, { id: 'grokbot', name: 'Grok Bot', icon: 'apps' }], menuFor = null;
+let trayItems = [{ id: 'sync', name: 'Sincronización', icon: 'restart' }, { id: 'music', name: 'Música', icon: 'music' }, { id: 'vpn', name: 'Conexión segura', icon: 'lock' }], menuFor = null;
 function renderApps() {
   const L = $('.mo-applist'); L.innerHTML = '';
   if (!trayItems.length) { L.innerHTML = '<div class="mo-empty">No hay apps en segundo plano</div>'; return }
@@ -547,7 +547,7 @@ dots.innerHTML = S.ws.map(w => `<b class="${w === 1 ? 'a' : ''}"></b>`).join('')
 
 /* Notifs.qml */
 let notifT;
-function notify() { S.notif = { summary: 'Diego', body: '¿Probaste la isla nueva en la web?' }; chars.forEach(c => c.react('curious')); restartLife() }
+function notify() { S.notif = { summary: 'Calendario', body: 'Reunión de diseño en 10 minutos' }; chars.forEach(c => c.react('curious')); restartLife() }
 function restartLife() { clearTimeout(notifT); notifT = setTimeout(function tick() { if (S.hovers > 0) { notifT = setTimeout(tick, 250); return } S.notif = null }, 5000) }
 function notifDismiss() { S.notif = null; clearTimeout(notifT) }
 
