@@ -470,7 +470,7 @@ const TRACKS = [['Afterglow', 'Nova Ensemble', 214], ['Quiet Hours', 'Nova Ensem
 let artAngle = 0;
 
 /* Apps en segundo plano (AppsPanel.qml) */
-let trayItems = [{ id: 'sync', name: 'Sincronización', icon: 'restart' }, { id: 'music', name: 'Música', icon: 'music' }, { id: 'vpn', name: 'Conexión segura', icon: 'lock' }], menuFor = null;
+let trayItems = [], menuFor = null;
 function renderApps() {
   const L = $('.mo-applist'); L.innerHTML = '';
   if (!trayItems.length) { L.innerHTML = '<div class="mo-empty">No hay apps en segundo plano</div>'; return }
