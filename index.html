@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minimo OS — Una isla flotante. Un personaje feliz.</title>
+<meta name="description" content="Minimo OS es una configuración minimalista de Hyprland para Arch Linux: una isla dinámica flotante y un personaje feliz. Creado por TRN1 (Diego Ledesma).">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Minimo OS">
+<meta property="og:description" content="Una isla flotante. Un personaje feliz. Configuración minimalista de Hyprland para Arch Linux.">
+<meta property="og:url" content="https://diegolede.github.io/minimo-os-web/">
+<meta property="og:image" content="https://diegolede.github.io/minimo-os-web/assets/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="#top"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="240" fill="#0B0B0C"/><rect x="164.6" y="175" width="71.5" height="162" rx="35.75" fill="#fff"/><rect x="275.9" y="175" width="71.5" height="162" rx="35.75" fill="#fff"/></svg>Minimo OS</a>
+  <div class="links"><a href="#que-es">Qué es</a><a href="#capturas">Capturas</a><a href="#instalar">Instalar</a><a href="#apoyar">Apoyar</a></div>
+  <a class="pill small" href="https://github.com/Diegolede/minimo-os">GitHub</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="char-wrap" id="charWrap">
+    <svg id="minimo" viewBox="0 0 512 512" role="img" aria-label="Minimo, el personaje de Minimo OS">
+      <defs><clipPath id="sphere"><circle cx="256" cy="256" r="240"/></clipPath></defs>
+      <g id="body"><circle cx="256" cy="256" r="240" fill="#0B0B0C"/>
+        <g clip-path="url(#sphere)"><rect id="eyeL" x="164.6" y="175" width="71.5" height="162" rx="35.75" fill="#fff"/><rect id="eyeR" x="275.9" y="175" width="71.5" height="162" rx="35.75" fill="#fff"/></g>
+      </g>
+    </svg>
+    <div id="hearts" aria-hidden="true"></div>
+  </div>
+  <h1>Minimo OS</h1>
+  <p class="tagline">Una isla flotante. Un personaje feliz.</p>
+  <div class="cta"><a class="pill dark" href="#instalar">Instalar</a><a class="pill" href="https://github.com/Diegolede/minimo-os">Ver en GitHub</a></div>
+  <p class="hint">Pasá el mouse. Hacele varios clics seguidos.</p>
+</header>
+
+<section id="que-es" class="section">
+  <h2>Qué es Minimo OS</h2>
+  <p class="lead">Una configuración minimalista de Hyprland para Arch Linux. Todo gira alrededor de una isla dinámica flotante y de Minimo, un personaje que te acompaña mientras trabajás.</p>
+  <div class="grid">
+    <div class="card"><h3>Isla dinámica</h3><p>Flota arriba de la pantalla con la hora, la música y los escritorios. Un clic abre el menú.</p></div>
+    <div class="card"><h3>Un personaje feliz</h3><p>Minimo sigue el mouse, parpadea, baila con la música, se duerme y le gusta que lo acaricien.</p></div>
+    <div class="card"><h3>Buscador</h3><p>Abrí cualquier app desde la isla o con Super+B.</p></div>
+    <div class="card"><h3>Grabación</h3><p>Capturas de área y grabación de pantalla en un toque.</p></div>
+    <div class="card"><h3>Panel de estado</h3><p>Internet, procesador, memoria, disco, temperatura y dispositivos conectados, con solo deslizar la isla.</p></div>
+    <div class="card"><h3>Modo oscuro y Wi-Fi</h3><p>Claro u oscuro desde Personalización. El Wi-Fi aparece solo cuando lo necesitás.</p></div>
+  </div>
+</section>
+
+<section id="capturas" class="section">
+  <h2>Capturas</h2>
+  <p class="lead">Capturas reales de Ajustes en Minimo OS.</p>
+  <div class="shots">
+    <figure><img src="assets/ajustes-personalizacion.png" width="920" height="640" loading="lazy" alt="Ajustes, Personalización"><figcaption>Personalización</figcaption></figure>
+    <figure><img src="assets/ajustes-pantalla.png" width="920" height="640" loading="lazy" alt="Ajustes, Pantalla"><figcaption>Pantalla</figcaption></figure>
+    <figure><img src="assets/ajustes-acerca.png" width="920" height="640" loading="lazy" alt="Ajustes, Acerca de"><figcaption>Acerca de</figcaption></figure>
+  </div>
+  <figure class="video"><video src="assets/minimo-os-trailer.mp4" poster="assets/poster.png" controls preload="none" playsinline></video><figcaption>Tráiler animado. Es una recreación, no una grabación de pantalla.</figcaption></figure>
+</section>
+
+<section id="instalar" class="section">
+  <h2>Instalación</h2>
+  <p class="lead">Una sola línea en la terminal.</p>
+  <div class="cmd"><code id="cmd">curl -fsSL https://raw.githubusercontent.com/Diegolede/minimo-os/main/install.sh | bash</code><button class="pill dark small" id="copy" type="button">Copiar</button></div>
+  <ul class="req"><li>Arch Linux</li><li>Hyprland 0.56 o superior</li></ul>
+  <p class="muted">Para ver qué haría sin instalar nada, reemplazá <code>bash</code> por <code>bash -s -- --dry-run</code>. Código e instrucciones en <a href="https://github.com/Diegolede/minimo-os">github.com/Diegolede/minimo-os</a>.</p>
+</section>
+
+<section id="apoyar" class="section center">
+  <h2>Apoyar Minimo OS</h2>
+  <p class="lead">Minimo OS es gratis y de código abierto. Si te gusta, una donación ayuda a seguir mejorando la isla dinámica y a sumar nuevas funciones.</p>
+  <!-- TODO: reemplazar href="#" por el link de donaciones de Diego y quitar aria-disabled / clase "soon" -->
+  <a class="pill dark soon" href="#" aria-disabled="true" id="donate">Donar · Próximamente</a>
+</section>
+
+<footer class="footer">
+  <p>Creado por TRN1 (Diego Ledesma)</p>
+  <p class="muted">© 2026 · Licencia MIT · <a href="https://github.com/Diegolede/minimo-os">GitHub</a></p>
+</footer>
+<script src="main.js"></script>
+</body>
+</html>

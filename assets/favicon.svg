@@ -1,0 +1,6 @@
+<!-- SPDX-License-Identifier: MIT · Copyright (c) 2026 Diego Ledesma (TRN1) — Minimo OS -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <circle cx="256" cy="256" r="240" fill="#0B0B0C"/>
+  <rect x="164.6" y="175" width="71.5" height="162" rx="35.75" fill="#FFFFFF"/>
+  <rect x="275.9" y="175" width="71.5" height="162" rx="35.75" fill="#FFFFFF"/>
+</svg>
