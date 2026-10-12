@@ -48,3 +48,7 @@ const btn=document.getElementById('copy');btn.addEventListener('click',async()=>
  btn.textContent='Copiado';setTimeout(()=>btn.textContent='Copiar',1600)});
 document.getElementById('donate').addEventListener('click',e=>e.preventDefault());
 })();
+
+(()=>{const lb=document.getElementById('lb'),im=lb.querySelector('img');
+document.querySelectorAll('a.zoom').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();im.src=a.href;im.alt=a.querySelector('img').alt;lb.hidden=false}));
+lb.addEventListener('click',()=>lb.hidden=true);addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true})})();
