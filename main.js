@@ -45,7 +45,7 @@ function frame(now){
 requestAnimationFrame(frame);
 const btn=document.getElementById('copy');btn.addEventListener('click',async()=>{const t=document.getElementById('cmd').textContent;
  try{await navigator.clipboard.writeText(t)}catch{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
- btn.textContent='Copiado';setTimeout(()=>btn.textContent='Copiar',1600)});
+ const l=btn.querySelector('span'),st=document.getElementById('copyStatus');btn.classList.add('done');l.textContent='Copiado';if(st)st.textContent='Comando copiado';clearTimeout(btn._t);btn._t=setTimeout(()=>{btn.classList.remove('done');l.textContent='Copiar';if(st)st.textContent=''},1800)});
 document.getElementById('donate').addEventListener('click',e=>e.preventDefault());
 })();
 

@@ -18,12 +18,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="island.css">
 </head>
 <body>
 <nav class="nav">
   <a class="brand" href="#top"><svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="240" fill="#0B0B0C"/><rect x="164.6" y="175" width="71.5" height="162" rx="35.75" fill="#fff"/><rect x="275.9" y="175" width="71.5" height="162" rx="35.75" fill="#fff"/></svg>Minimo OS</a>
   <div class="links"><a href="#que-es">Qué es</a><a href="#capturas">Capturas</a><a href="#instalar">Instalar</a><a href="#apoyar">Apoyar</a></div>
-  <a class="pill small" href="https://github.com/Diegolede/minimo-os">GitHub</a>
+  <div class="nav-r"><a class="pill small ghost" href="https://github.com/Diegolede/minimo-os">GitHub</a><a class="pill small dark" href="#instalar">Instalar</a></div>
 </nav>
 
 <header class="hero" id="top">
@@ -60,21 +61,34 @@
   <p class="lead">Capturas y grabación reales de la pantalla de Minimo OS.</p>
   <div class="demo"><video autoplay muted loop playsinline poster="assets/island-poster.jpg" width="576" height="900"><source src="assets/island-demo.webm" type="video/webm"><source src="assets/island-demo.mp4" type="video/mp4"></video><p class="cap">Grabación real: la isla, el centro de control y el panel de estado</p></div>
   <h3 class="sub">La isla</h3>
-  <div class="row cols-2 wide"><figure class="shot "><a href="assets/isla-reposo.webp" class="zoom"><img src="assets/isla-reposo.webp" width="480" height="80" loading="lazy" alt="Isla en reposo" style="max-width:480px"></a><figcaption>En reposo</figcaption></figure><figure class="shot "><a href="assets/isla-grabando.webp" class="zoom"><img src="assets/isla-grabando.webp" width="480" height="80" loading="lazy" alt="Isla grabando" style="max-width:480px"></a><figcaption>Grabando la pantalla</figcaption></figure></div>
-  <h3 class="sub">Centro de control y panel de estado</h3>
-  <div class="row cols-4 tall"><figure class="shot "><a href="assets/menu-musica.webp" class="zoom"><img src="assets/menu-musica.webp" width="440" height="620" loading="lazy" alt="Centro de control con música" style="max-width:440px"></a><figcaption>Centro de control con la música</figcaption></figure><figure class="shot "><a href="assets/menu-lanzador.webp" class="zoom"><img src="assets/menu-lanzador.webp" width="440" height="620" loading="lazy" alt="Centro de control" style="max-width:440px"></a><figcaption>Accesos rápidos</figcaption></figure><figure class="shot "><a href="assets/panel-estado.webp" class="zoom"><img src="assets/panel-estado.webp" width="440" height="620" loading="lazy" alt="Panel de estado" style="max-width:440px"></a><figcaption>Panel de estado</figcaption></figure><figure class="shot "><a href="assets/panel-mirada.webp" class="zoom"><img src="assets/panel-mirada.webp" width="440" height="620" loading="lazy" alt="Minimo siguiendo el mouse" style="max-width:440px"></a><figcaption>Minimo sigue el mouse</figcaption></figure></div>
-  <h3 class="sub">Ajustes</h3>
+  <div class="mo" id="mo" tabindex="-1">
+  <div class="mo-stage"><div class="mo-wall"></div><div class="mo-pill" role="group" aria-label="Isla dinámica de Minimo OS (demo interactiva)"></div></div>
+  <div class="mo-ctl" role="toolbar" aria-label="Probar estados de la isla">
+    <button data-a="menu">Menú</button><button data-a="status">Recursos</button><button data-a="apps">En segundo plano</button>
+    <button data-a="music">Música</button><button data-a="notif">Notificación</button><button data-a="rec">Grabar</button>
+    <button data-a="sleep">Dormir</button><button data-a="pet">Mimar</button><button data-a="dark">Modo oscuro</button>
+  </div>
+  <p class="mo-hint">Hacé clic en la isla para abrir el menú. Deslizala hacia la derecha para ver los recursos y hacia la izquierda para las apps en segundo plano. Tocá a Minimo cuatro veces seguidas para mimarlo.</p>
+</div>
+    <h3 class="sub">Ajustes</h3>
   <div class="row cols-3 win"><figure class="shot "><a href="assets/ajustes-personalizacion.webp" class="zoom"><img src="assets/ajustes-personalizacion.webp" width="920" height="640" loading="lazy" alt="Ajustes, Personalización" style="max-width:920px"></a><figcaption>Personalización</figcaption></figure><figure class="shot "><a href="assets/ajustes-pantalla.webp" class="zoom"><img src="assets/ajustes-pantalla.webp" width="920" height="640" loading="lazy" alt="Ajustes, Pantalla" style="max-width:920px"></a><figcaption>Pantalla</figcaption></figure><figure class="shot "><a href="assets/ajustes-acerca.webp" class="zoom"><img src="assets/ajustes-acerca.webp" width="920" height="640" loading="lazy" alt="Ajustes, Minimo OS" style="max-width:920px"></a><figcaption>Acerca de Minimo OS</figcaption></figure></div>
   <h3 class="sub">Tráiler</h3>
   <figure class="video"><video src="assets/minimo-os-trailer.mp4" poster="assets/poster.png" controls preload="none" playsinline></video><figcaption>Tráiler animado. Es una recreación, no una grabación de pantalla.</figcaption></figure>
 </section>
 
-<section id="instalar" class="section">
+<section id="instalar" class="section install">
   <h2>Instalación</h2>
-  <p class="lead">Una sola línea en la terminal.</p>
-  <div class="cmd"><code id="cmd">curl -fsSL https://raw.githubusercontent.com/Diegolede/minimo-os/main/install.sh | bash</code><button class="pill dark small" id="copy" type="button">Copiar</button></div>
-  <ul class="req"><li>Arch Linux</li><li>Hyprland 0.56 o superior</li></ul>
-  <p class="muted">Para ver qué haría sin instalar nada, reemplazá <code>bash</code> por <code>bash -s -- --dry-run</code>. Código e instrucciones en <a href="https://github.com/Diegolede/minimo-os">github.com/Diegolede/minimo-os</a>.</p>
+  <p class="lead">Tres pasos. Unos minutos.</p>
+  <ol class="steps">
+    <li><span class="n">1</span><div><h3>Requisitos</h3><p>Arch Linux con Hyprland 0.56 o superior. El instalador agrega el resto de los paquetes.</p></div></li>
+    <li><span class="n">2</span><div><h3>Ejecutá el instalador</h3><p>Pegá esta línea en una terminal y respondé las preguntas.</p>
+      <div class="cmd"><code id="cmd">curl -fsSL https://raw.githubusercontent.com/Diegolede/minimo-os/main/install.sh | bash</code><button class="copy" id="copy" type="button" aria-label="Copiar comando"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><svg class="ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Copiar</span></button></div>
+      <p class="note">¿Querés ver qué haría sin cambiar nada? Agregá <code>-s -- --dry-run</code> después de <code>bash</code>.</p></div></li>
+    <li><span class="n">3</span><div><h3>Reiniciá o volvé a iniciar sesión</h3><p>Elegí Hyprland al entrar. La isla y Minimo aparecen arriba de la pantalla.</p></div></li>
+  </ol>
+  <p class="install-foot">El instalador respalda tu configuración en <code>~/.config/hypr.bak-&lt;fecha&gt;</code> y se puede deshacer con <code>uninstall.sh</code>.</p>
+  <a class="pill" href="https://github.com/Diegolede/minimo-os">Ver el código en GitHub</a>
+  <span role="status" aria-live="polite" class="sr" id="copyStatus"></span>
 </section>
 
 <section id="apoyar" class="section center">
@@ -88,7 +102,8 @@
   <p>Creado por TRN1 (Diego Ledesma)</p>
   <p class="muted">© 2026 · Licencia MIT · <a href="https://github.com/Diegolede/minimo-os">GitHub</a></p>
 </footer>
-<script src="main.js"></script>
 <div id="lb" class="lb" hidden><img alt=""></div>
+<script src="main.js"></script>
+<script src="island.js"></script>
 </body>
 </html>
