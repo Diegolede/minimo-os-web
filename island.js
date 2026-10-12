@@ -80,7 +80,7 @@ const wall = $('.mo-wall');
 /* ---------- Personaje (Character.qml + Reactions.qml) ---------- */
 class Character {
   constructor(el, size, opts = {}) {
-    this.el = el; this.s = size; this.r = size / 2; this.clickable = !!opts.clickable;
+    this.el = el; this.s = size; this.r = size / 2; this.clickable = !!opts.clickable; this.host = opts.host || null; this.card = !!opts.card; this.inView = !this.card; this.forceSleep = false; this.forceDance = false;
     el.classList.add('mo-chr'); el.style.width = el.style.height = size + 'px';
     el.innerHTML = '<div class="mo-body"><div class="mo-sph"></div><div class="mo-face"><div class="mo-roll"><div class="mo-eye"><i></i></div><div class="mo-eye"><i></i></div></div></div></div>';
     this.body = el.firstChild; this.rollEl = $('.mo-roll', el); this.eyes = [...el.querySelectorAll('.mo-eye')];
@@ -126,8 +126,8 @@ class Character {
     if (this.clickable) el.addEventListener('click', e => { e.stopPropagation(); const r = el.getBoundingClientRect(); c.clicked((e.clientX - r.left - r.width / 2) / (r.width / 2)) });
     chars.push(this);
   }
-  get asleep() { return S.sleepForced && !S.playing && !S.recording }
-  get dancing() { return this.active && S.playing }
+  get asleep() { return this.card ? this.forceSleep : (S.sleepForced && !S.playing && !S.recording) }
+  get dancing() { return this.active && (this.card ? this.forceDance : S.playing) }
   setActive(v) {
     if (RM) v = false;
     if (v === this.active) return; this.active = v;
@@ -139,7 +139,7 @@ class Character {
     if (this.asleep) { this.lookX = 0; this.lookY = .75; return }
     const cu = S.cursor, idle = !cu.ok || now() - cu.last > 4000;
     if (idle) { this.lookX = this.idleX; this.lookY = this.idleY; return }
-    const r = this.el.getBoundingClientRect(), st = stage.getBoundingClientRect();
+    const r = this.el.getBoundingClientRect(), st = (this.host || stage).getBoundingClientRect();
     const px = r.left + r.width / 2, py = r.top + r.height / 2;
     const dx = cu.x - px, dy = cu.y - py;
     const nx = dx / 320, ny = dy < 0 ? dy / Math.max(24, py - st.top) : dy / 320;
@@ -151,7 +151,7 @@ class Character {
   react(n) { if (this.active && !this.asleep) this.rx.play(n) }
   clicked(side) {
     if (!this.active) { if (RM && this.asleep) wake(); return }
-    if (this.asleep) { wake(); this.clickTimes = []; return }
+    if (this.asleep) { if (!this.card) wake(); this.clickTimes = []; return }
     const t = now(); this.clickTimes = this.clickTimes.filter(x => t - x < 1500).concat([t]);
     if (this.petting || this.clickTimes.length >= 4) this.pet(side);
     else if (this.clickTimes.length === 1) this.rx.playClick();
@@ -168,10 +168,10 @@ class Character {
   }
   spawnHeart(delay) {
     if (S.hearts >= 24) return;
-    const r = this.el.getBoundingClientRect(), st = stage.getBoundingClientRect(), s = this.s;
+    const r = this.el.getBoundingClientRect(), st = (this.host || stage).getBoundingClientRect(), s = this.s;
     const hs = Math.max(7, s * (.16 + Math.random() * .16));
     new Heart({ size: hs, x: r.left - st.left + r.width / 2 - hs / 2 + (Math.random() - .5) * s * .5, y: r.top - st.top + r.height * .2 - hs / 2,
-      rise: s * (.7 + Math.random() * .5), drift: (Math.random() - .5) * s * .7, delay: delay || 0 });
+      rise: s * (.7 + Math.random() * .5), drift: (Math.random() - .5) * s * .7, delay: delay || 0, host: this.host || stage });
   }
   onTyped() { if (this.active && !this.asleep) { this.squintT = 1; clearTimeout(this.sqR); this.sqR = setTimeout(() => this.squintT = 0, 600) } }
   onTypingStopped() { clearTimeout(this.sqR); this.squintT = 0 }
@@ -312,7 +312,7 @@ class Reactions {
 const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21.2C10.9 20.3 2.5 14.2 2.5 8.4 2.5 5.3 4.9 3 7.8 3c1.8 0 3.3.9 4.2 2.3C12.9 3.9 14.4 3 16.2 3c2.9 0 5.3 2.3 5.3 5.4 0 5.8-8.4 11.9-9.5 12.8z"/></svg>';
 class Heart {
   constructor(o) {
-    S.hearts++; const e = h('div', 'mo-heart', HEART); e.style.width = e.style.height = o.size + 'px'; stage.appendChild(e);
+    S.hearts++; const e = h('div', 'mo-heart', HEART); e.style.width = e.style.height = o.size + 'px'; o.host.appendChild(e);
     const st = { x: o.x, y: o.y, scale: .3, opacity: 0, rotation: 0 };
     const life = 1150 + Math.round(Math.random() * 350), sway = 6 + Math.random() * 6, peak = .9 + Math.random() * .2;
     const n = (p, to, ms, ez, os) => num(st, p, to, ms, ez, os);
@@ -547,7 +547,7 @@ dots.innerHTML = S.ws.map(w => `<b class="${w === 1 ? 'a' : ''}"></b>`).join('')
 
 /* Notifs.qml */
 let notifT;
-function notify() { S.notif = { summary: 'Calendario', body: 'Reunión de diseño en 10 minutos' }; chars.forEach(c => c.react('curious')); restartLife() }
+function notify() { S.notif = { summary: 'Calendario', body: 'Reunión de diseño en 10 minutos' }; chars.forEach(c => { if (!c.card) c.react('curious') }); restartLife() }
 function restartLife() { clearTimeout(notifT); notifT = setTimeout(function tick() { if (S.hovers > 0) { notifT = setTimeout(tick, 250); return } S.notif = null }, 5000) }
 function notifDismiss() { S.notif = null; clearTimeout(notifT) }
 
@@ -606,9 +606,10 @@ function frame(t) {
     pill.style.width = I.w + 'px'; pill.style.height = I.h + 'px'; pill.style.borderRadius = Math.min(I.h / 2, 28) + 'px';
     pill.style.transform = `translateX(${(SW - I.w) / 2 + rubber * .5}px)`;
     V_.menu.style.transform = V_.status.style.transform = V_.apps.style.transform = 'translateX(-50%)';
-    chars.forEach(c => c.frame(t, dt));
-    renders.forEach(f => f());
+    chars.forEach(c => { if (!c.card) c.frame(t, dt) });
   }
+  chars.forEach(c => { if (c.card && c.inView) c.frame(t, dt) });
+  renders.forEach(f => f());
   requestAnimationFrame(frame);
 }
 new IntersectionObserver(es => { visible = es[0].isIntersecting }).observe(stage);
@@ -638,5 +639,58 @@ function ctlSync() { const on = { menu: I.expanded, status: I.panel && I.kind ==
 setInterval(ctlSync, 500);
 
 sync(); requestAnimationFrame(frame);
+
+/* ---------- Los detalles: tarjetas con un Minimo vivo cada una ---------- */
+(() => {
+  const grid = document.getElementById('anims'); if (!grid) return;
+  const L = [
+    ['wink', 'Guiño', 'Cierra un ojo y se inclina. Su reacción favorita.'],
+    ['giggle', 'Risita', 'Se encoge y se sacude de alegría.'],
+    ['hop', 'Salto', 'Un saltito con aplaste y estirón.'],
+    ['doubleHop', 'Doble salto', 'Dos saltos seguidos, el segundo más alto.'],
+    ['happyBounce', 'Rebote feliz', 'Rebota con los ojos sonrientes.'],
+    ['curious', 'Curioso', 'Inclina la cabeza para mirar de reojo.'],
+    ['lookAround', 'Mirar alrededor', 'Mira a un lado y al otro.'],
+    ['surprise', 'Sorpresa', 'Abre grandes los ojos y da un respingo.'],
+    ['dizzy', 'Mareo', 'Da una vuelta con los ojos y se tambalea.'],
+    ['yawn', 'Bostezo', 'Entrecierra los ojos y se estira.'],
+    ['greet', 'Saludo', 'Te recibe cuando abrís la isla.'],
+    ['startled', 'Susto', 'Se sobresalta si movés el mouse muy rápido.'],
+    ['#pet', 'Mimos', 'Tocalo varias veces seguidas y suelta corazones.'],
+    ['#squint', 'Al escribir', 'Entrecierra los ojos mientras buscás.'],
+    ['#sleep', 'Dormido', 'Se duerme cuando no usás la PC.'],
+    ['#dance', 'Baile', 'Se mueve al ritmo cuando suena música.'],
+    ['#look', 'Te sigue', 'Parpadea y sigue el cursor con la mirada.'],
+  ];
+  grid.innerHTML = L.map(([k, t, d]) => `<li class="an" data-k="${k}"><div class="an-stage"><div class="an-chr"></div>${k === '#sleep' ? zzzHTML() : ''}${k === '#squint' ? '<div class="an-field"><span class="an-txt"></span><i></i></div>' : ''}</div><h3>${t}</h3><p>${d}</p></li>`).join('');
+  function zzzHTML() { return '<div class="mo-zzz on an-z">' + [0, 1, 2].map(i => `<span style="font-size:${9 + i * 1.5}px;animation-delay:${i * 900}ms"><em style="animation-delay:${i * 900}ms"><u style="animation-delay:${i * 900}ms">z</u></em></span>`).join('') + '</div>' }
+  const word = 'notas';
+  const cards = [...grid.children].map(li => {
+    const k = li.dataset.k, st = li.querySelector('.an-stage');
+    const c = new Character(li.querySelector('.an-chr'), 64, { host: st, card: true });
+    if (k === '#sleep') c.forceSleep = true;
+    if (k === '#dance') c.forceDance = true;
+    const o = { li, k, c, t: null, busy: false };
+    o.play = () => {
+      if (!c.active) return;
+      if (k[0] !== '#') { c.rx.play(k); return }
+      if (k === '#pet') { c.pet(); setTimeout(() => c.pet(), 380); setTimeout(() => c.pet(), 760); return }
+      if (k === '#squint') { const tx = li.querySelector('.an-txt'); let i = 0; clearInterval(o.ty);
+        o.ty = setInterval(() => { if (i <= word.length) { tx.textContent = word.slice(0, i++); c.onTyped() } else { clearInterval(o.ty); setTimeout(() => { tx.textContent = ''; c.onTypingStopped() }, 700) } }, 160); return }
+      if (k === '#look') { c.doBlink(Math.random() < .3); return }
+    };
+    li.addEventListener('mouseenter', () => o.play());
+    li.addEventListener('click', () => o.play());
+    return o;
+  });
+  // bus.typed() afecta a todos; en las tarjetas solo queremos el propio.
+  bus.typed = function () { chars.forEach(x => { if (!x.card) x.onTyped() }) };
+  const loop = o => { clearTimeout(o.t); o.t = setTimeout(() => { if (o.c.inView) { if (!o.c.rx.busy && !o.c.petting) o.play(); loop(o) } }, 2600 + Math.random() * 1400) };
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    const o = cards.find(x => x.li === e.target); o.c.inView = e.isIntersecting; o.c.setActive(e.isIntersecting);
+    if (e.isIntersecting) { setTimeout(() => o.play(), 300 + Math.random() * 500); loop(o) } else clearTimeout(o.t);
+  }), { threshold: .35 });
+  cards.forEach(o => io.observe(o.li));
+})();
 root.__mo = { S, I, C, chars, collapse, expand, openPanel, notify };
 })();
